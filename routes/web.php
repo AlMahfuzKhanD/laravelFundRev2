@@ -87,6 +87,36 @@ Route::get('/', function () {
 // Route::get('/post/{id}', 'PostsController@index');
 
 // Route::resource('posts', 'PostsController');
-Route::get('/contact', 'PostsController@contact');
+// Route::get('/contact', 'PostsController@contact');
 
-Route::get('/posts/{id}', 'PostsController@showPost');
+// Route::get('/posts/{id}', 'PostsController@showPost');
+
+/*
+|--------------------------------------------------------------------------
+| Database raw sql
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/insert', function(){
+    DB::insert('insert into posts(title, body) values(?, ?)', ['php with laravel','laravel is a framework']);
+
+
+});
+
+Route::get('/read', function(){
+    $results = DB::select('select * from posts where id=?', [1]);
+
+    foreach($results as $post){
+        return $post->title;
+    }
+});
+
+Route::get('/update', function(){
+    $update = DB::update('update posts set title = "updated title" where id =?', [1]);
+    return $update;
+});
+
+Route::get('/delete', function(){
+    $delete = DB::delete('delete from posts where id=?', [1]);
+    return $delete;
+});
