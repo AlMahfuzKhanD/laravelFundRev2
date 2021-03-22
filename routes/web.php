@@ -118,5 +118,11 @@ Route::get('/update', function(){
 
 Route::get('/delete', function(){
     $delete = DB::delete('delete from posts where id=?', [1]);
-    return $delete;
+    return $delete
 });
+
+/*
+|--------------------------------------------------------------------------
+| Database eloquent
+|--------------------------------------------------------------------------
+*/
