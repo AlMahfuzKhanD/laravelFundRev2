@@ -1,5 +1,7 @@
 <?php
 
+
+use App\Post;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -118,7 +120,7 @@ Route::get('/update', function(){
 
 Route::get('/delete', function(){
     $delete = DB::delete('delete from posts where id=?', [1]);
-    return $delete
+    return $delete;
 });
 
 /*
@@ -126,3 +128,89 @@ Route::get('/delete', function(){
 | Database eloquent
 |--------------------------------------------------------------------------
 */
+
+Route::get('/find', function(){
+
+$posts = Post::find(3);
+
+return $posts->title;
+
+});
+
+
+Route::get('/findwhere', function(){
+    $post = Post::where('id',2)->orderBy('id', 'desc')->take(1)->get();
+    return $post;
+});
+
+Route::get('/findmore', function(){
+    // $post = Post::findOrFail(3);
+    // return $post;
+
+    $posts = Post::where('users_count', '<', 50)->firstOrFail();
+    return $posts;
+});
+
+
+Route::get('/basicinsert', function(){
+    $post = new Post;
+    $post->title = 'new title';
+    $post->body = 'new body';
+
+    $post->save();
+});
+
+
+Route::get('/basicupdate', function(){
+    $post = Post::find(2);
+    $post->title = 'updated title';
+    $post->body = 'updated body';
+
+    $post->save();
+});
+
+
+Route::get('/create', function(){
+    Post::create(['title'=>'created title', 'body'=>'create body']);
+});
+
+Route::get('/update', function(){
+    Post::where('id',5)->update(['title'=>'updated title', 'body'=>'updated body']);
+});
+
+
+Route::get('/delete', function(){
+    $post = Post::find(2);
+    $post->delete();
+});
+
+
+Route::get('/delete2', function(){
+
+Post::destroy([4,5]);
+
+});
+
+Route::get('/softdelete', function(){
+    Post::find(13)->delete();
+});
+
+Route::get('/readsoftdelete', function(){
+    // $post = Post::find(8);
+    // return $post;
+
+    // $post = Post::withTrashed()->where('id',8)->get();
+    // return $post;
+
+    $post = Post::onlyTrashed()->get();
+     return $post;
+
+});
+
+Route::get('/restored', function(){
+    Post::withTrashed()->restore();
+});
+
+Route::get('/forcedelete', function(){
+    Post::onlyTrashed()->forceDelete();
+});
