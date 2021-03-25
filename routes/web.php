@@ -260,7 +260,7 @@ Route::get('/user/{id}/roles', function($id){
 Route::get('/user/pivot', function(){
     $user = User::find(1);
     foreach($user->roles as $role){
-        echo $role->pivot->created_at;
+        
     }
 
 });
