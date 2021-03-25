@@ -16,4 +16,8 @@ class Post extends Model
         'title',
         'body'
     ];
+
+    public function user(){ // one to one
+        return $this->belongsTo('App\User');
+    }
 }

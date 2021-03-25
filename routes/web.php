@@ -2,6 +2,7 @@
 
 
 use App\Post;
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -213,4 +214,53 @@ Route::get('/restored', function(){
 
 Route::get('/forcedelete', function(){
     Post::onlyTrashed()->forceDelete();
+});
+
+/*
+|--------------------------------------------------------------------------
+|  eloquent relationship 
+|--------------------------------------------------------------------------
+*/
+
+// one to one
+
+Route::get('/user/{id}/post', function($id){
+    return User::find($id)->post;
+});
+
+// inverse one to one
+
+Route::get('/post/{id}/user', function($id){
+    return Post::find($id)->user->name;
+});
+
+// one to many
+
+Route::get('/posts', function(){
+    $user = User::find(1);
+    foreach($user->posts as $post){
+        echo $post->title . "<br>";
+
+    }
+});
+
+//many to many
+
+Route::get('/user/{id}/roles', function($id){
+
+    $user = User::find($id);
+    foreach($user->roles as $role){
+        echo $role->name;
+    }
+});
+
+
+//accessing pivot table
+
+Route::get('/user/pivot', function(){
+    $user = User::find(1);
+    foreach($user->roles as $role){
+        echo $role->pivot->created_at;
+    }
+
 });
