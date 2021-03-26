@@ -4,6 +4,7 @@
 use App\Post;
 use App\User;
 use App\Country;
+use App\Photo;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -282,4 +283,13 @@ Route::get('/user/photo', function(){
     foreach($user->photos as $photo){
         return $photo->path;
     }
+});
+
+//  polymorphic inverse
+
+Route::get('/photo/{id}/post', function($id){
+
+    $photo = Photo::findOrFail($id);
+   return $photo->imageable;
+
 });
