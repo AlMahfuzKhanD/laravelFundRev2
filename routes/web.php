@@ -5,6 +5,7 @@ use App\Post;
 use App\User;
 use App\Country;
 use App\Photo;
+use App\Tag;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -102,29 +103,29 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('/insert', function(){
-    DB::insert('insert into posts(title, body) values(?, ?)', ['php with laravel','laravel is a framework']);
+// Route::get('/insert', function(){
+//     DB::insert('insert into posts(title, body) values(?, ?)', ['php with laravel','laravel is a framework']);
 
 
-});
+// });
 
-Route::get('/read', function(){
-    $results = DB::select('select * from posts where id=?', [1]);
+// Route::get('/read', function(){
+//     $results = DB::select('select * from posts where id=?', [1]);
 
-    foreach($results as $post){
-        return $post->title;
-    }
-});
+//     foreach($results as $post){
+//         return $post->title;
+//     }
+// });
 
-Route::get('/update', function(){
-    $update = DB::update('update posts set title = "updated title" where id =?', [1]);
-    return $update;
-});
+// Route::get('/update', function(){
+//     $update = DB::update('update posts set title = "updated title" where id =?', [1]);
+//     return $update;
+// });
 
-Route::get('/delete', function(){
-    $delete = DB::delete('delete from posts where id=?', [1]);
-    return $delete;
-});
+// Route::get('/delete', function(){
+//     $delete = DB::delete('delete from posts where id=?', [1]);
+//     return $delete;
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -132,91 +133,91 @@ Route::get('/delete', function(){
 |--------------------------------------------------------------------------
 */
 
-Route::get('/find', function(){
+// Route::get('/find', function(){
 
-$posts = Post::find(3);
+// $posts = Post::find(3);
 
-return $posts->title;
+// return $posts->title;
 
-});
-
-
-Route::get('/findwhere', function(){
-    $post = Post::where('id',2)->orderBy('id', 'desc')->take(1)->get();
-    return $post;
-});
-
-Route::get('/findmore', function(){
-    // $post = Post::findOrFail(3);
-    // return $post;
-
-    $posts = Post::where('users_count', '<', 50)->firstOrFail();
-    return $posts;
-});
+// });
 
 
-Route::get('/basicinsert', function(){
-    $post = new Post;
-    $post->title = 'new title';
-    $post->body = 'new body';
+// Route::get('/findwhere', function(){
+//     $post = Post::where('id',2)->orderBy('id', 'desc')->take(1)->get();
+//     return $post;
+// });
 
-    $post->save();
-});
+// Route::get('/findmore', function(){
+//     // $post = Post::findOrFail(3);
+//     // return $post;
 
-
-Route::get('/basicupdate', function(){
-    $post = Post::find(2);
-    $post->title = 'updated title';
-    $post->body = 'updated body';
-
-    $post->save();
-});
+//     $posts = Post::where('users_count', '<', 50)->firstOrFail();
+//     return $posts;
+// });
 
 
-Route::get('/create', function(){
-    Post::create(['title'=>'created title', 'body'=>'create body']);
-});
+// Route::get('/basicinsert', function(){
+//     $post = new Post;
+//     $post->title = 'new title';
+//     $post->body = 'new body';
 
-Route::get('/update', function(){
-    Post::where('id',5)->update(['title'=>'updated title', 'body'=>'updated body']);
-});
-
-
-Route::get('/delete', function(){
-    $post = Post::find(2);
-    $post->delete();
-});
+//     $post->save();
+// });
 
 
-Route::get('/delete2', function(){
+// Route::get('/basicupdate', function(){
+//     $post = Post::find(2);
+//     $post->title = 'updated title';
+//     $post->body = 'updated body';
 
-Post::destroy([4,5]);
+//     $post->save();
+// });
 
-});
 
-Route::get('/softdelete', function(){
-    Post::find(13)->delete();
-});
+// Route::get('/create', function(){
+//     Post::create(['title'=>'created title', 'body'=>'create body']);
+// });
 
-Route::get('/readsoftdelete', function(){
+// Route::get('/update', function(){
+//     Post::where('id',5)->update(['title'=>'updated title', 'body'=>'updated body']);
+// });
+
+
+// Route::get('/delete', function(){
+//     $post = Post::find(2);
+//     $post->delete();
+// });
+
+
+// Route::get('/delete2', function(){
+
+// Post::destroy([4,5]);
+
+// });
+
+// Route::get('/softdelete', function(){
+//     Post::find(13)->delete();
+// });
+
+// Route::get('/readsoftdelete', function(){
     // $post = Post::find(8);
     // return $post;
 
     // $post = Post::withTrashed()->where('id',8)->get();
     // return $post;
 
-    $post = Post::onlyTrashed()->get();
-     return $post;
+//     $post = Post::onlyTrashed()->get();
+//      return $post;
 
-});
+// });
 
-Route::get('/restored', function(){
-    Post::withTrashed()->restore();
-});
+// Route::get('/restored', function(){
+//     Post::withTrashed()->restore();
+// });
 
-Route::get('/forcedelete', function(){
-    Post::onlyTrashed()->forceDelete();
-});
+// Route::get('/forcedelete', function(){
+//     Post::onlyTrashed()->forceDelete();
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -226,70 +227,90 @@ Route::get('/forcedelete', function(){
 
 // one to one
 
-Route::get('/user/{id}/post', function($id){
-    return User::find($id)->post;
-});
+// Route::get('/user/{id}/post', function($id){
+//     return User::find($id)->post;
+// });
 
-// inverse one to one
+// // inverse one to one
 
-Route::get('/post/{id}/user', function($id){
-    return Post::find($id)->user->name;
-});
+// Route::get('/post/{id}/user', function($id){
+//     return Post::find($id)->user->name;
+// });
 
-// one to many
+// // one to many
 
-Route::get('/posts', function(){
-    $user = User::find(1);
-    foreach($user->posts as $post){
-        echo $post->title . "<br>";
+// Route::get('/posts', function(){
+//     $user = User::find(1);
+//     foreach($user->posts as $post){
+//         echo $post->title . "<br>";
 
-    }
-});
+//     }
+// });
 
 //many to many
 
-Route::get('/user/{id}/roles', function($id){
+// Route::get('/user/{id}/roles', function($id){
 
-    $user = User::find($id);
-    foreach($user->roles as $role){
-        echo $role->name;
-    }
-});
+//     $user = User::find($id);
+//     foreach($user->roles as $role){
+//         echo $role->name;
+//     }
+// });
 
 
 //accessing pivot table
 
-Route::get('/user/pivot', function(){
-    $user = User::find(1);
-    foreach($user->roles as $role){
-        echo $role->pivot;
-    }
+// Route::get('/user/pivot', function(){
+//     $user = User::find(1);
+//     foreach($user->roles as $role){
+//         echo $role->pivot;
+//     }
 
-});
+// });
 
 //has many through
 
-Route::get('/user/country', function(){
-    $country = Country::find(1);
-    foreach($country->posts as $post){
-        return $post->title;
-    }
-});
+// Route::get('/user/country', function(){
+//     $country = Country::find(1);
+//     foreach($country->posts as $post){
+//         return $post->title;
+//     }
+// });
 
 //polymorphic 
 
-Route::get('/user/photo', function(){
-    $user = User::find(1);
-    foreach($user->photos as $photo){
-        return $photo->path;
-    }
-});
+// Route::get('/user/photo', function(){
+//     $user = User::find(1);
+//     foreach($user->photos as $photo){
+//         return $photo->path;
+//     }
+// });
 
 //  polymorphic inverse
 
-Route::get('/photo/{id}/post', function($id){
+// Route::get('/photo/{id}/post', function($id){
 
-    $photo = Photo::findOrFail($id);
-   return $photo->imageable;
+//     $photo = Photo::findOrFail($id);
+//    return $photo->imageable;
 
+// });
+
+
+//polymorphic many to many
+
+// Route::get('/post/tag', function(){
+// $post = Post::find(1);
+
+// foreach($post->tags as $tag){
+//     echo $tag->name;
+// }
+// });
+
+// polymorphic many to many inverse
+
+Route::get('/tag/post', function(){
+$tag = Tag::find(2);
+    foreach($tag->posts as $post){
+        echo $post->title;
+    }
 });
